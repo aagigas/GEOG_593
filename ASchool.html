@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create an ArcGIS.com 2D Mashup</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/css/main.css">
+        <style>
+            html,
+            body,
+            #viewDiv {
+                padding: 0;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+        <script src="https://js.arcgis.com/4.28/"></script>
+        <script>
+            require(["esri/Map", "esri/views/MapView", "esri/Graphic", "esri/geometry/Point", "esri/symbols/PictureMarkerSymbol", "esri/widgets/Locate",], function(Map, MapView, Graphic, Point, PictureMarkerSymbol,Locate,) {
+                var initMap = new Map({
+                    basemap: "streets-vector"
+                });
+                var view = new MapView({
+                    container: "viewDiv", // Reference to the DOM node that will contain the view
+                    map: initMap, // References the map object created in the previous step
+                    extent: {// autocasts as new Extent
+                    xmin: -13864000,
+                    ymin: 6258000,
+                    xmax: -13767000,
+                    ymax: 6336000,
+                    spatialReference: 102100, // WKID coordinate system code
+                    }
+                });
+
+                // Create a point marker symbol
+                var pictureSymbol = new PictureMarkerSymbol({
+                    url: "images/Goschool.png",
+                    width: "30px",
+                    height: "30px",
+                });
+
+                // Create a template for popups
+                var infoTemplate = {
+                    title: "{Name}",
+                    content: [{
+                        type: "fields",
+                        fieldInfos: [{fieldName: "Name"}, {fieldName: "Phone"}, {fieldName: "URL"}],
+                    }]
+                };
+
+                // Function to add Nanaimo schools to map
+                function pictureMarker(simpleX, simpleY, simpleName, simplePhone, simpleURL) {
+                    var point = new Point({
+                        x: simpleX,
+                        y: simpleY,
+                        spatialReference: {wkid: 102100},
+                    });
+                    var pointGraphic = new Graphic({
+                        symbol: pictureSymbol,
+                        geometry: point,
+                        attributes: {Name: simpleName, Phone: simplePhone, URL: "<a href=${simpleURL} target='_blank'>School's URL</a>"},
+                        popupTemplate: infoTemplate,
+                    });
+                    view.graphics.add(pointGraphic);
+                };
+
+                // Create marked points for each school within 1.5km of John Barbsy Community School
+                pictureMarker(-13798269.7982, 6300212.72922, "JOHN BARSBY COMMUNITY SCHOOL", "250-753-8211", "http://jb.schools.sd68.bc.ca/");
+                /*
+                // Create point geometry (the location of John Barsby Community School)
+                var jbcs = new Point({
+                    x: -13798269.7982,
+                    y: 6300212.72922,
+                    spatialReference: { wkid: 102100 },
+                });
+                // Create a graphic and add the symbol and geometry to it
+                var point_johnbarsb = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: jbcs,
+                    attributes: {Name: "JOHN BARSBY COMMUNITY SCHOOL", Phone: "250-753-8211", URL: "<a target='_blank' href=http://jb.schools.sd68.bc.ca/>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                // Add the graphic to the view's graphics layer
+                view.graphics.add(point_johnbarsb);
+                */
+
+                // Fairview Elementary
+                pictureMarker(-13798672.664, 6303053.3287, "FAIRVIEW ELEMENTARY", "250-753-3418", "https://fv.schools.sd68.bc.ca/");
+                /*
+                var fe = new Point({
+                    x: -13798672.664,
+                    y: 6303053.3287,
+                    spatialReference: { wkid: 102100 },
+                });
+                var point_fe = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: fe,
+                    attributes: {Name: "FAIRVIEW ELEMENTARY", Phone:"250-753-3418", URL: "<a target='_blank' href=https://fv.schools.sd68.bc.ca/>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                view.graphics.add(point_fe);
+                */
+
+                // Georgia Avenue Elementary
+                pictureMarker(-13798338.8164, 6300942, "GEORGIA AVENUE ELEMENTARY", "250-753-1044", "https://ge.schools.sd68.bc.ca/");
+                /*
+                var gae = new Point({
+                    x: -13798338.8164,
+                    y: 6300942,
+                    spatialReference: { wkid: 102100 },
+                });
+                var point_gae = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: gae,
+                    attributes: {Name: "GEORGIA AVENUE ELEMENTARY", Phone:"250-753-1044", URL: "<a href=https://ge.schools.sd68.bc.ca/ target'_blank'>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                view.graphics.add(point_gae);
+                */
+
+                // Pauline Haarer Elementary
+                pictureMarker(-13797296.755, 6303493.258, "PAULINE HAARER ELEMENTARY", "250-754-2722", "https://ph.schools.sd68.bc.ca/");
+                /*
+                var phe = new Point({
+                    x: -13797296.755,
+                    y: 6303493.258,
+                    spatialReference: { wkid: 102100 },
+                });
+                var point_phe = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: phe,
+                    attributes: {Name: "PAULINE HAARER ELEMENTARY", Phone: "250-754-2722", URL: "<a href=https://ph.schools.sd68.bc.ca/ target='_blank'>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                view.graphics.add(point_phe);
+                */
+
+                // Continuing Ed SD 68
+                pictureMarker(-13799278.2419, 6302219.8408, "CONTINUING ED SD 68", "250-753-3418", "https://www.sd68.bc.ca/");
+                /*
+                var ces = new Point({
+                    x: -13799278.2419,
+                    y: 6302219.8408,
+                    spatialReference: { wkid: 102100 },
+                });
+                var point_ces = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: ces,
+                    attributes: {Name: "CONTINUING ED SD 68", Phone: "250-753-3418", URL:"<a href=https://www.sd68.bc.ca/ target='_blank'>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                view.graphics.add(point_ces);
+                */
+
+                // Malaspina International Highschool
+                pictureMarker(-1380002.9692, 6301259.7984, "MALASPINA INTERNATIONAL HIGH SCHOOL", "250-740-6317", "https://internationalschoolguide.com/canada/malaspina.htm");
+                /*
+                var mis = new Point({
+                    x: -1380002.9692,
+                    y: 6301259.7984,
+                    spatialReference: { wkid: 102100 },
+                });
+                var point_mis = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: mis,
+                    attributes: {Name: "MALASPINA INTERNATIONAL HIGH SCHOOL", Phone: "250-740-6317", URL: "<a href=https://internationalschoolguide.com/canada/malaspina.htm target='_blank'>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                view.graphics.add(point_mis);
+                */
+
+                // Nanaimo Career & technical CTR
+                pictureMarker(-13799278.2421, 6302510.9391, "NANAIMO CAREER & TECHNICAL CTR", "250-740-2032", "https://ctc-careerpaths.ca/");
+                /*
+                var nct = new Point({
+                    x: -13799278.2421,
+                    y: 6302510.9391,
+                    spatialReference: { wkid: 102100 },
+                });
+                var point_nct = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: nct,
+                    attributes: {Name: "NANAIMO CAREER & TECHNICAL CTR", Phone:"250-740-2032", URL: "<a href=https://ctc-careerpaths.ca/ target='_blank'>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                view.graphics.add(point_nct);
+                */
+
+                // Nanaimo District Secondary
+                pictureMarker(-13799278.2421, 6302510.9391, "NANAIMO DISTRICT SECONDARY", "250-740-2000", "https://nd.schools.sd68.bc.ca/");
+                /*
+                var nds = new Point({
+                    x: -13799278.2421,
+                    y: 6302510.9391,
+                    spatialReference: { wkid: 102100 },
+                });
+                var point_nds = new Graphic({
+                    symbol: pictureSymbol,
+                    geometry: nds,
+                    attributes: {Name: "NANAIMO DISTRICT SECONDARY", Phone: "250-740-2000", URL: "<a href=https://nd.schools.sd68.bc.ca/ target='_blank'>School's Website</a>"},
+                    popupTemplate: infoTemplate,
+                });
+                view.graphics.add(point_nds); 
+                */
+
+                const locate = new Locate({
+                    view: view,
+                    useHeadingEnabled: false,
+                    goToOverride: function(view, options) {
+                        options.target.scale = 1500;
+                        return view.goTo(options.target);
+                    }
+                });
+                view.ui.add(locate, "top-left");
+                
+            });
+        </script>
+    </head>
+    <body>
+        <h2 style="text-align:center">Nanaimo Schools: ArcGIS Maps SDK for Javascript</h2>
+        <div id="viewDiv" style="width:900px; height:600px; border:1px solid #000;"></div>
+    </body>
+</html>

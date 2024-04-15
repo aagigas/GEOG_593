@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Samples of Animated Maps</title>
+    </head>
+
+    <body>
+        <video width="320" height="240" controls>
+            <source src="fly_sample.mp4" type="video/mp4">
+        </video>
+        <br>
+        <br>
+        <a href="JavaScriptAnimation.html">View Javascript Animation</a>
+        <br>
+        <br>
+        <img src="myanimation.gif" alt="">
+        <br>
+        <br>
+        <a href="JavaScriptSlideShow.html">View Javascript Automatic Slide Show</a>
+        <br>
+        <br>
+        
+        <p>Click the button to get your coordinates.</p>
+        
+        <button onclick="getLocation()">Get my Location</button>
+        
+        <p id="demo"></p>
+        
+        <script>
+            var x = document.getElementById("demo");
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                       x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+
+            function showPosition(position) {
+                x.innerHTML = "Latitude: " + position.coords.latitude +
+                    "<br>Longitude: " + position.coords.longitude;
+            }
+        </script>
+        
+    </body>
+</html>

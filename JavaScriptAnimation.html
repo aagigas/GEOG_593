@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Javascript Animation</title>
+        <script>
+            var animation = true;
+
+            var img0 = new Image(1056, 816);
+            img0.src = "images/January.jpg";
+
+            var img1 = new Image(1056, 816);
+            img1.src = "images/February.jpg";
+
+            var img2 = new Image(1056, 816);
+            img2.src = "images/March.jpg";
+
+            var img3 = new Image(1056, 816);
+            img3.src = "images/April.jpg";
+
+            var img4 = new Image(1056, 816);
+            img4.src = "images/May.jpg";
+
+            var img5 = new Image(1056, 816);
+            img5.src = "images/June.jpg";
+
+            var img6 = new Image(1056, 816);
+            img6.src = "images/July.jpg";
+
+            var img7 = new Image(1056, 816);
+            img7.src = "images/August.jpg";
+
+            var img8 = new Image(1056, 816);
+            img8.src = "images/September.jpg";
+
+            var img9 = new Image(1056, 816);
+            img9.src = "images/October.jpg";
+
+            var img10 = new Image(1056, 816);
+            img10.src = "images/November.jpg";
+
+            var img11 = new Image(1056, 816);
+            img11.src = "images/December.jpg";
+
+            var i = 0;
+            var nbImg = 12;
+            function animate() {
+                if (animation) {
+                    document.images[0].src = eval("img" + i).src;
+                }
+                i++;
+                if (i == nbImg) i=0;
+                junk = setTimeout("animate();", 500);
+            }
+        </script>
+    </head>
+
+    <body onLoad="animate();">
+        <form>
+            <input type="button" onClick="animation = true;" value="Start">
+            <input type="button" onClick="animation = false;" value="Stop">
+        </form>
+        <img src="" width=500 height=386>
+    </body>
+
+</html>

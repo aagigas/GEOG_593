@@ -1,0 +1,36 @@
+body{
+    background-color: #FFEAF4;
+    margin-top:2%;
+    margin-right:10%;
+    margin-bottom:2%;
+    margin-left:10%;
+    color:#575053;
+}
+h1{
+    font-size:largest; 
+    margin:0;
+    text-align:center;
+}
+
+h2 {
+    font-size:larger;
+    margin:0;
+}
+
+img {
+    border:0;
+}
+
+table {
+    border:0;
+}
+
+#center {
+    text-align:center;
+}
+
+#profile {
+    clear:right;
+    margin-left:2%;
+    border:0;
+}

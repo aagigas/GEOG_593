@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Municipalities Fabric Web Map with Leaflet</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+	<!-- Leaflet Style Sheet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: auto;
+		}
+		h2 {
+			text-align: center;
+		}
+		h3 {
+			text-align: center;
+		}
+		.leaflet-container {
+			height: 400px;
+			width: 600px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+		/* Map Box Style */
+		#map {
+			width: 800px;
+			height: 600px;
+			border: 1px solid #000;
+			margin: auto;
+		}
+	</style>
+
+	
+</head>
+<body>
+<h2>The Municipalities of Nanaimo</h2>
+<h3>A fabric map using Leaflet's Javascript API</h3>
+<!-- Add Map Container -->
+<div id='map'></div>
+
+<!-- Add Municipalities JavaScript -->
+<script src="Municipalities.js" type="text/javascript"></script>
+
+<script>
+	/* Construct the Map and Set Initial View */
+	const map = L.map('map').setView([49.139, -124.146], 9);
+
+	/* Construct the Tiles Layer */
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+	
+	/* Populate Leaflet Popups */
+	function pop_Municipalities (feature, layer) {
+		var popupContent = "<b>" + "Municipality name: " + feature.properties['NAME'] + "</b>" + "</br>" + "Web URL: " + "<a href='" + feature.properties['HTTP_URL'] + "' target='_blank'>Web site</a>" + "</br>" + "Population: " + feature.properties['POP96'] + "</br>" + "Number of Dwellings: " + feature.properties['DWELL96'] + "</br>" + "Area sq.km: " + feature.properties['POP_SQKM'] + "</br>" + "Province: " + feature.properties['PROV'];
+		layer.bindPopup(popupContent);
+	}
+
+	/* Style for Municipalities JSON */
+	function style_municipalitiesG_0_0() {
+		return {
+			pane: 'pane_municipalitiesG_0',
+			opacity: 1,
+			color: 'rgba(0,0,0,1)',
+			dashArray: '',
+			lineCap: 'butt',
+			lineJoin: 'miter',
+			weight: 1.0,
+			fill: true,
+			fillOpacity: 0,
+			fillColor: 'rgba(111,173,70,1.0)',
+		}
+	}
+
+	/* Add Pane */
+	map.createPane('pane_municipalitiesG_0');
+	map.getPane('pane_municipalitiesG_0').style.zIndex = 400;
+	map.getPane('pane_municipalitiesG_0').style['mix-blend-mode'] = 'normal';
+
+	/* Add geoJSON */
+	var mun = L.geoJSON(json_municipalitiesG_0, {
+		style: style_municipalitiesG_0_0,
+		onEachFeature: pop_Municipalities,
+	}).addTo(map);
+	
+	/* Scale Bar */
+	L.control.scale().addTo(map)
+
+	/* Layers */
+	var osm = L.tileLayer('https://maptiles.p.rapidapi.com/en/map/v1/{z}/{x}/{y}.png?rapidapi-key={apikey}', {
+			attribution: '&copy; <a href="http://www.maptilesapi.com/">MapTiles API</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			apikey: '<your apikey>',
+			maxZoom: 19
+		});
+	var osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
+	});
+	var openTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+			maxZoom: 17,
+			attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+	}); 
+
+	var baseLayers = {
+		"OpenStreetMap": osm,
+		"Open Street Map HOT": osmHOT,
+		"Open Topo Map": openTopo
+	}
+
+	var overlays = {
+		"Municipalities": mun
+	}
+
+	/* Layer Controls */
+	L.control.layers(baseLayers, overlays).addTo(map);
+
+</script>
+
+
+
+</body>
+</html>
